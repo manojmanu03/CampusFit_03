@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session , render_template_string
+from flask import Flask, render_template, request, redirect, url_for, session, render_template_string, send_from_directory
 from flask_cors import CORS
 import os
 import csv
@@ -25,7 +25,7 @@ from api.tests import tests_bp
 from api.results import results_bp
 from services.mailer import send_email as brevo_send_email
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='frontend/dist', static_url_path='')
 app.secret_key = settings.FLASK_SECRET_KEY
 app.config['MAX_CONTENT_LENGTH'] = settings.MAX_CONTENT_LENGTH
 
@@ -1259,11 +1259,31 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
+# API Health Check
 @app.route('/api/health')
 def health_check():
-    return {'status': 'healthy', 'service': 'campusfit-backend'}
+    return {"status": "healthy", "message": "CampusFit API is running"}
+
+# Serve React Frontend
+@app.route('/')
+def serve_frontend():
+    return send_from_directory(app.static_folder, 'index.html')
+
+# Handle React Router routes (SPA routing)
+@app.route('/<path:path>')
+def serve_static_files(path):
+    # If it's an API route, let Flask handle it normally
+    if path.startswith('api/'):
+        return {"error": "API endpoint not found"}, 404
+    
+    # Try to serve static files (CSS, JS, images, etc.)
+    try:
+        return send_from_directory(app.static_folder, path)
+    except:
+        # If file not found, serve index.html for React Router
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     os.makedirs('data', exist_ok=True)
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=settings.FLASK_DEBUG)
+    app.run(host='0.0.0.0', port=port, debug=settings.DEBUG)
