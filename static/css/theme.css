@@ -1,0 +1,149 @@
+/* Global Theme - Resume.io style with Dark Pink (#970747) and White */
+:root {
+  --primary-color: #970747;
+  --secondary-color: #b80d67;
+  --accent-color: #e24a8e;
+  --bg-page: #ffffff;
+  --bg-muted: #faf7f9;
+  --text-primary: #141414;
+  --text-secondary: #5b5b5b;
+  --border-color: #eee3e9;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 4px 10px rgba(0,0,0,0.06);
+  --shadow-md: 0 10px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 18px 40px rgba(0,0,0,0.14);
+  --gradient-primary: linear-gradient(135deg, #970747 0%, #b80d67 100%);
+}
+
+/* Base */
+html, body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Containers */
+.container, .main-content, .features-section, .how-it-works-section, .stats-section, .cta-section {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cards */
+.card,
+.feature-card,
+.summary-card,
+.achievements-card,
+.step-item,
+.result-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Headings */
+h1,h2,h3 { color: #1f1f1f; }
+.section-title i { color: var(--primary-color); }
+
+/* Buttons */
+.btn,
+button,
+.cta-button,
+.login-btn,
+.upload-btn,
+.steps-cta-button,
+.confirm-btn,
+.edit-btn {
+  border-radius: 999px;
+  padding: 0.9rem 1.4rem;
+  font-weight: 600;
+  letter-spacing: .2px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+
+.btn-primary,
+.cta-button.primary,
+.login-btn,
+.upload-btn,
+.confirm-btn {
+  background: var(--gradient-primary);
+  color: #fff !important;
+  box-shadow: var(--shadow-md);
+}
+.btn-primary:hover,
+.cta-button.primary:hover,
+.login-btn:hover,
+.upload-btn:hover,
+.confirm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-outline,
+.cta-button.secondary,
+.edit-btn {
+  background: #fff;
+  color: var(--primary-color) !important;
+  border: 2px solid var(--primary-color) !important;
+}
+.btn-outline:hover,
+.cta-button.secondary:hover,
+.edit-btn:hover {
+  background: var(--primary-color);
+  color: #fff !important;
+}
+
+/* Forms */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select, textarea {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #e9b3c9;
+  box-shadow: 0 0 0 4px rgba(151,7,71,0.08);
+}
+
+label { color: var(--text-secondary); font-weight: 600; }
+
+/* Pills and badges */
+.badge, .benefit-badge, .step-feature, .file-type {
+  border-radius: 999px;
+}
+
+/* Hero and headers subtle background accents */
+.hero-section, .cta-card, .cta-section {
+  background-image: radial-gradient(1000px 400px at 10% -10%, rgba(151,7,71,0.06), transparent),
+                    radial-gradient(1000px 400px at 90% 110%, rgba(184,13,103,0.06), transparent);
+}
+
+/* Links */
+a { color: var(--primary-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Tables (if any) */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border-color); }
+
+/* Footer */
+footer { border-top: 1px solid var(--border-color); }

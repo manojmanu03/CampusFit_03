@@ -1,0 +1,60 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution/packaging
+.dist/
+dist/
+build/
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+.env/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+tempCodeRunnerFile.py
+
+# Log files
+*.log
+app.log
+
+# Local ML model files (should be generated through training)
+models/*.pkl
+
+# Local development configuration
+instance/
+.env
+
+# Test coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Frontend dependencies and build
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# Uploads and temporary files
+static/uploads/
+tmp/
+*.tmp
+
+# Database files
+*.db
+*.sqlite3
+
+# OS generated files
+Thumbs.db
+.DS_Store

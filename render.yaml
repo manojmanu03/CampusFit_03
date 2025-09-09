@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: campusfit-backend
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT app:app"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: campusfit-db
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: UPLOAD_FOLDER
+        value: /tmp/uploads
+    healthCheckPath: /api/health
+
+  - type: static
+    name: campusfit-frontend
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: campusfit-db
+    databaseName: campusfit
+    user: campusfit_user
