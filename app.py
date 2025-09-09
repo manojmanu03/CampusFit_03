@@ -290,7 +290,7 @@ def generate_feedback(data: dict) -> list:
 # Routes
 @app.route('/')
 def home():
-    return render_template('login.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -300,8 +300,8 @@ def login():
         if authenticate_user(username, password):
             session['username'] = username
             return redirect(url_for('dashboard'))
-        return render_template('login.html', error="Invalid credentials")
-    return render_template('login.html')
+        return send_from_directory(app.static_folder, 'index.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -310,18 +310,18 @@ def register():
         password = request.form.get('password')
         email = request.form.get('email')
         if not all([username, password, email]):
-            return render_template('register.html', error="All fields ")
+            return send_from_directory(app.static_folder, 'index.html')
         if user_exists(username):
-            return render_template('register.html', error="Username exists")
+            return send_from_directory(app.static_folder, 'index.html')
         register_user(username, password, email)
         return redirect(url_for('home'))
-    return render_template('register.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/dashboard')
 def dashboard():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template('dashboard.html', username=session['username'])
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 
@@ -356,13 +356,13 @@ def upload_resume():
                 except:
                     pass
                     
-                return render_template('resume_upload.html', resume_score=resume_score)
+                return send_from_directory(app.static_folder, 'index.html')
             else:
-                return render_template('resume_upload.html', resume_score=None, error="Could not extract text from resume")
+                return send_from_directory(app.static_folder, 'index.html')
         else:
-            return render_template('resume_upload.html', resume_score=None, error="Invalid file format")
+            return send_from_directory(app.static_folder, 'index.html')
 
-    return render_template('resume_upload.html', resume_score=session.get('resume_score'))
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/input_parameters', methods=['GET', 'POST'])
@@ -405,7 +405,7 @@ def input_parameters():
         
         session.modified = True
         return redirect(url_for('test_confirmation'))
-    return render_template('input_parameters.html')
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/test_confirmation', methods=['GET', 'POST'])
@@ -418,17 +418,7 @@ def test_confirmation():
             return redirect(url_for('aptitude_test'))
         return redirect(url_for('input_parameters'))
     
-    return render_template(
-        'test_confirmation.html',
-        username=session.get('username'),
-        cgpa=session.get('cgpa', 0),
-        backlogs=session.get('backlogs', 0),
-        hackathons=session.get('hackathons', 0),
-        certificates=session.get('certificates', 0),
-        internship=session.get('internship', 0),
-        Projects=session.get('Projects', 0),       
-        Branch=session.get('Branch', '')        
-    )
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/aptitude_test', methods=['GET', 'POST'])
@@ -1215,11 +1205,7 @@ def results():
         'communication': session.get('communication_answers', {})
     }
 
-    return render_template('results.html',
-        tests=tests,
-        test_details=test_details,
-        **user_data
-    )
+    return send_from_directory(app.static_folder, 'index.html')
     
 
 @app.route('/final_result')
@@ -1247,12 +1233,7 @@ def final_result():
     readiness_score = calculate_readiness_score(score_data)
     feedback = generate_feedback(score_data)
     
-    return render_template('final_result.html',
-                         username=session['username'],
-                         readiness_score=round(readiness_score, 1),
-                         feedback=feedback,
-                         placement_ready=prediction['placement_ready'],
-                         company_fit=prediction['company_fit'])
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/logout')
 def logout():
