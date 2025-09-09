@@ -59,41 +59,7 @@ app.register_blueprint(resume_bp)
 app.register_blueprint(tests_bp)
 app.register_blueprint(results_bp)
 
-# Utility functions
-def user_exists(username):
-    if not os.path.exists('data/loginUsers.csv'):
-        return False
-    with open('data/loginUsers.csv', 'r') as file:
-        return any(row and row[0] == username for row in csv.reader(file))
-
-def register_user(username, password, email):
-    with open('data/loginUsers.csv', 'a', newline='') as file:
-        csv.writer(file).writerow([username, password, email])
-
-def authenticate_user(username, password):
-    if not os.path.exists('data/loginUsers.csv'):
-        return False
-    with open('data/loginUsers.csv', 'r') as file:
-        return any(row and row[0] == username and row[1] == password for row in csv.reader(file))
-
-def get_user_email(username):
-    with open('data/loginUsers.csv', 'r') as file:
-        for row in csv.reader(file):
-            if row and row[0] == username:
-                return row[2] if len(row) > 2 else None
-    return None
-
-def update_user_password(username, new_password):
-    rows = []
-    with open('data/loginUsers.csv', 'r') as file:
-        rows = list(csv.reader(file))
-    with open('data/loginUsers.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for row in rows:
-            if row and row[0] == username:
-                row[1] = new_password
-            writer.writerow(row)
-    return True
+# Legacy CSV authentication functions removed - using MongoDB API authentication instead
 
 def generate_reset_token(username):
     token = secrets.token_urlsafe(32)
@@ -292,35 +258,12 @@ def generate_feedback(data: dict) -> list:
 def home():
     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username', '').strip()
-        password = request.form.get('password', '').strip()
-        if authenticate_user(username, password):
-            session['username'] = username
-            return redirect(url_for('dashboard'))
-        return send_from_directory(app.static_folder, 'index.html')
-    return send_from_directory(app.static_folder, 'index.html')
+# Legacy login route removed - using /api/auth/login instead
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        email = request.form.get('email')
-        if not all([username, password, email]):
-            return send_from_directory(app.static_folder, 'index.html')
-        if user_exists(username):
-            return send_from_directory(app.static_folder, 'index.html')
-        register_user(username, password, email)
-        return redirect(url_for('home'))
-    return send_from_directory(app.static_folder, 'index.html')
+# Legacy register route removed - using /api/auth/register instead
 
 @app.route('/dashboard')
 def dashboard():
-    if 'username' not in session:
-        return redirect(url_for('login'))
     return send_from_directory(app.static_folder, 'index.html')
 
 
@@ -329,8 +272,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 @app.route('/upload_resume', methods=['GET', 'POST'])
 def upload_resume():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     global latest_resume_score  # Declare you're using/modifying the global variable
     resume_score = None
@@ -367,8 +308,6 @@ def upload_resume():
 
 @app.route('/input_parameters', methods=['GET', 'POST'])
 def input_parameters():
-    if 'username' not in session:
-        return redirect(url_for('login'))
     if request.method == 'POST':
         # Get form values with proper error handling
         try:
@@ -410,8 +349,6 @@ def input_parameters():
 
 @app.route('/test_confirmation', methods=['GET', 'POST'])
 def test_confirmation():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
         if request.form.get('action') == 'confirm':
@@ -423,8 +360,6 @@ def test_confirmation():
 
 @app.route('/aptitude_test', methods=['GET', 'POST'])
 def aptitude_test():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
         # Get all answers from the form
@@ -671,8 +606,6 @@ def aptitude_test():
 
 @app.route('/technical_test', methods=['GET', 'POST'])
 def technical_test():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
         user_answers = {f'q{i}': request.form.get(f'q{i}') for i in range(1, 11)}
@@ -916,8 +849,6 @@ def technical_test():
 
 @app.route('/communication_test', methods=['GET', 'POST'])
 def communication_test():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
         user_answers = {f'q{i}': request.form.get(f'q{i}') for i in range(1, 11)}
@@ -1161,8 +1092,6 @@ def communication_test():
     
 @app.route('/results')
 def results():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     # Initialize scores with defaults
     tests = {
@@ -1210,8 +1139,6 @@ def results():
 
 @app.route('/final_result')
 def final_result():
-    if 'username' not in session:
-        return redirect(url_for('login'))
 
     from ml_predictor import get_prediction_from_session
     
