@@ -17,8 +17,9 @@ services:
         value: /tmp/uploads
     healthCheckPath: /api/health
 
-  - type: static
+  - type: web
     name: campusfit-frontend
+    env: static
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: frontend/dist
     routes:
