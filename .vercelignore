@@ -1,0 +1,17 @@
+# Ignore backend files for Vercel deployment
+api/
+data/
+services/
+static/
+templates/
+utils/
+*.py
+*.pkl
+*.csv
+requirements.txt
+Procfile
+render.yaml
+railway.json
+build.sh
+start.sh
+runtime.txt
