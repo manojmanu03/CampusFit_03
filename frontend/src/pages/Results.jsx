@@ -14,7 +14,7 @@ export default function Results(){
     (async ()=>{
       setLoading(true); setError('')
       try {
-        const { data } = await api.get('/api/results')
+        const { data } = await api.get('/results')
         setData(data)
         // Trigger celebration animation after data loads
         setTimeout(() => setCelebrating(true), 500)

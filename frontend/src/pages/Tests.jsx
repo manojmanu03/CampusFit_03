@@ -12,7 +12,7 @@ export default function Tests(){
       try {
         // Try to load test results
         try {
-          const { data: resultsData } = await api.get('/api/results')
+          const { data: resultsData } = await api.get('/results')
           setTestResults(resultsData)
         } catch {
           // Results not available yet

@@ -9,7 +9,7 @@ export default function Profile(){
 
   useEffect(()=>{
     (async ()=>{
-      try { const { data } = await api.get('/api/profile'); setForm({ ...form, ...data }) } catch {}
+      try { const { data } = await api.get('/profile'); setForm({ ...form, ...data }) } catch {}
     })()
   }, [])
 
@@ -17,7 +17,7 @@ export default function Profile(){
     setMsg('')
     setLoading(true)
     try {
-      await api.post('/api/profile', form)
+      await api.post('/profile', form)
       setMsg('Profile saved successfully!')
     } catch (err) {
       setMsg(err?.response?.data?.error || 'Save failed')

@@ -71,7 +71,7 @@ export default function Resume() {
       // Start the visual processing simulation
       simulateProcessing()
 
-      const response = await fetch('/api/resume/upload', {
+      const response = await fetch('/resume/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

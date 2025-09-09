@@ -23,7 +23,7 @@ export default function TestPage() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.get(`/api/questions/${type.toUpperCase()}`);
+        const { data } = await api.get(`/questions/${type.toUpperCase()}`);
         setQuestions(data.questions || []);
         
         // Check if user has already seen instructions for any test
@@ -105,7 +105,7 @@ export default function TestPage() {
         };
       });
       
-      await api.post(`/api/tests/${type}`, { answers: payload });
+      await api.post(`/tests/${type}`, { answers: payload });
       
       // Navigate back to dashboard after completing individual test
       navigate('/dashboard');

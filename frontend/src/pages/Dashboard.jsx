@@ -13,12 +13,12 @@ export default function Dashboard(){
     (async ()=>{
       try {
         // Load profile data
-        const { data: profileData } = await api.get('/api/profile')
+        const { data: profileData } = await api.get('/profile')
         setProfile(profileData)
 
         // Try to load test results
         try {
-          const { data: resultsData } = await api.get('/api/results')
+          const { data: resultsData } = await api.get('/results')
           setTestResults(resultsData)
         } catch {
           // Results not available yet

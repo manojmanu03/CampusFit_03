@@ -14,7 +14,7 @@ export default function Login({ onAuth }){
     setError('')
     setLoading(true)
     try {
-      const { data } = await api.post('/api/auth/login', { username, password })
+      const { data } = await api.post('/auth/login', { username, password })
       onAuth?.(data.token)
       navigate('/dashboard')
     } catch (err) {

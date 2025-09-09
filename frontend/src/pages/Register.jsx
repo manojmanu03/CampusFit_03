@@ -13,7 +13,7 @@ export default function Register(){
     e.preventDefault()
     setError(''); setOk(false); setLoading(true)
     try {
-      await api.post('/api/auth/register', form)
+      await api.post('/auth/register', form)
       setOk(true)
       setTimeout(()=> navigate('/auth/login'), 1500)
     } catch (err) {
