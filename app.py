@@ -1177,18 +1177,18 @@ def health_check():
 def serve_frontend():
     return send_from_directory(app.static_folder, 'index.html')
 
-# Handle React Router routes (SPA routing)
+# Handle React Router routes (SPA routing) - must be last route
 @app.route('/<path:path>')
-def serve_static_files(path):
-    # If it's an API route, let Flask handle it normally
+def serve_spa_routes(path):
+    # If it's an API route, return 404 
     if path.startswith('api/'):
-        return {"error": "API endpoint not found"}, 404
+        return jsonify({'error': 'API endpoint not found'}), 404
     
-    # Try to serve static files (CSS, JS, images, etc.)
+    # Try to serve static files first (CSS, JS, images, etc.)
     try:
         return send_from_directory(app.static_folder, path)
     except:
-        # If file not found, serve index.html for React Router
+        # If static file not found, serve index.html for React Router
         return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
